@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>ChuXiaokai</title>
+  </head>
+    <body>
+    <h1>Sign In</h1>
+    <form method="post" name="sign_up" action="/sign_up">
+        <p>
+            Please enter your username:<br>
+            {{form.username(size=80)}}<br>
+            Please enter your passwd:<br>
+            {{form.passwd(size=80)}}<br>
+            Please retype your passwd:<br>
+            {{form.retype_passwd(size=80)}}<br>
+        </p>
+        <p><input type="submit" value="sign_up"></p>
+    </form>
+    </body>
+</html>

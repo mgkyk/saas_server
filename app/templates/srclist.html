@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>ChuXiaokai</title>
+  </head>
+    <body>
+    <h1>Here is the source available</h1>
+    <form method="post" name="src_list" action="/src_list">
+        <a href="{{ url_for('user_info', user_name='cxk') }}">Home</a>
+        <ul>
+            <li>sources: </li>
+            {% for item in source_info %}
+                <br>{{item.source_name}}: {{item.detail}}</br>
+                <a href="{{ url_for('get_src', user_name=user.user ,src_name=item.source_name) }}">install now</a>
+            {% endfor %}
+        </ul>
+        <p><input type="submit" value="sign_up"></p>
+    </form>
+    </body>
+</html>
