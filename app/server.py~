@@ -91,5 +91,5 @@ class Server(object):
             self.exec_shell(shell_path, containers, state='cluster')
         else:
             container_id, passwd, container_ip = self.init_machine('5a9116ebd2fd')
-            print("dddddddddddddddddddddddddddddddddd")
+            print(containers)
             self.exec_shell(shell_path, container_id, state='single')
