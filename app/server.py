@@ -85,11 +85,11 @@ class Server(object):
         if map == 'cluster':
             containers = []
             for i in range(num_node):
-                container_id, passwd, container_ip = self.init_machine('043ece8dff9c')
+                container_id, passwd, container_ip = self.init_machine('666cb2f7a158')
                 containers.append(container_id)
             print(containers)
             self.exec_shell(shell_path, containers, state='cluster')
         else:
-            container_id, passwd, container_ip = self.init_machine('5a9116ebd2fd')
+            container_id, passwd, container_ip = self.init_machine('ff416b30c157')
             print("dddddddddddddddddddddddddddddddddd")
             self.exec_shell(shell_path, container_id, state='single')
