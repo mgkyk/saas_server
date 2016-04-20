@@ -100,7 +100,16 @@ def get_src(user_name, src_name):  # user need to put a excel, how to do that
 @app.route('/<string:user_name>/user_info', methods=['GET'])
 @login_required
 def user_info(user_name):  # 包括user的所有的信息
-    return render_template('hello_world.html')
+    print('ddd')
+    user = db.session.query(User).filter(User.user==user_name).first()
+    src_info = user.source_info
+    print(src_info)
+    if src_info == '':
+        src_info = []
+    else:
+        tmp = src_info.split(';')
+        src_info = tmp
+    return render_template('hello_world.html', user=user.user, src_info=src_info)
 
 @app.route('/<string:user_name>//wait', methods=['GET'])
 @login_required

@@ -96,7 +96,7 @@ class Server(object):
             
             user = db.session.query(User).filter(User.user==user_name).first()
             source_info = user.source_info
-            source_info = source_info + str(src_name) + '_' + str(num_node) + 'nodes;'
+            source_info = source_info + str(src_name) + ': ' + str(num_node) + 'nodes;'
             print(source_info)
             db.session.query(User).filter(User.user==user_name).update({User.source_info: source_info})
             db.session.commit()
