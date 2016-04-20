@@ -7,10 +7,12 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user = db.Column(db.String(40))
     password_hash = db.Column(db.String(40))  # password need to be hashed before installed
+    source_info = db.Column(db.String(40))
 
     def __init__(self, id, user):
         self.user = user
         self.id = id
+        source_info = ""
 
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
