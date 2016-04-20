@@ -83,24 +83,35 @@ class Server(object):
             return ret_info
 
     def install_software(self, user_name, shell_path, src_name, map, num_node):
+        """
+        install a software named src_name
+        :param user_name:
+        :param shell_path:
+        :param src_name:
+        :param map:
+        :param num_node:
+        :return:
+        """
         if map == 'cluster':
             containers = []
+            container_ips = []
             for i in range(num_node):
                 container_id, passwd, container_ip = self.init_machine('666cb2f7a158')
                 containers.append(container_id)
+                container_ips.append(container_ip)
             print(containers)
             # self.exec_shell(shell_path, containers, state='cluster')
-            for i in range(num_node):  # write in the db
+            # write in the db
+            # write table vm_machine
+            for i in range(num_node):
                 new_mc = VM_machine(mc_id=containers[i], user=user_name, apply_info=str(user_name)+'_'+str(src_name), state='ON')
                 db.session.add(new_mc)
-            
+            # write table user
             user = db.session.query(User).filter(User.user==user_name).first()
             source_info = user.source_info
-            source_info = source_info + str(src_name) + ': ' + str(num_node) + 'nodes;'
-            print(source_info)
+            source_info = source_info + str(src_name) + ': ' + str(num_node) + 'nodes-> '+container_ips[0]+'(mgmd), ' + ', '.join(container_ips[1:]) + ';'
             db.session.query(User).filter(User.user==user_name).update({User.source_info: source_info})
             db.session.commit()
-            
         else:
             container_id, passwd, container_ip = self.init_machine('ff416b30c157')
             # self.exec_shell(shell_path, container_id, state='single')
@@ -110,6 +121,7 @@ class Server(object):
             db.session.add(new_mc)
             user = db.session.query(User).filter(User.user==user_name).first()
             source_info = user.source_info
-            source_info = source_info + str(src_name) + ';'
+            source_info = source_info + str(src_name) + '-> ' + container_ip + ';'
             db.session.query(User).filter(User.user==user_name).update({User.source_info:source_info})
             db.session.commit()
+

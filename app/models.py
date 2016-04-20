@@ -7,7 +7,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user = db.Column(db.String(40))
     password_hash = db.Column(db.String(40))  # password need to be hashed before installed
-    source_info = db.Column(db.String(200))
+    source_info = db.Column(db.String(400))
     
     def __init__(self, id, user):
         self.id = id

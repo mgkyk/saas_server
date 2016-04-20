@@ -5,11 +5,18 @@
     <body>
     <h1>Hello {{user_name}}</h1>
     <h2>Here is your source</h2>
+    <div><dl>
+      {% if src_info == [] %}
+        nothing - -||
+      {% else %}
+        {% for record in src_info %}
+        <dt>{{record}}</dt>
+        {% endfor %}
+      {% endif %}
+       </dl></div>
     <div>
-      {% for record in src_info %}
-      <ul>{{record}}</ul>
-      {% endfor %}
-      </div>
-    <h3>For more source, please click <a href="{{ url_for('srclist') }}">here</a></h3>
+    hint: If source you installed is not existing in this page, please wait for a minute and refresh
+    </div>
+    <h4>For more source, please click <a href="{{ url_for('srclist') }}">here</a></h4>
     </body>
 </html>
