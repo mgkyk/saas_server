@@ -56,16 +56,16 @@ class Server(object):
                 shell = shell + ' ' + param[i]
             print(shell)
 
-            # if os.system(shell) == 0:
-            #     return True
-            # else:
-            #     return False
+            if os.system(shell) == 0:
+                return True
+            else:
+                return False
         else:
             shell = "bash "+shell_path+' '+param
-            # if os.system(shell) == 0:
-            #     return True
-            # else:
-            #     return False
+            if os.system(shell) == 0:
+                return True
+            else:
+                return False
 
     def get_machine_state(self, container_id):
         """
