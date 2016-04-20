@@ -4,6 +4,7 @@
 # __author__: chuxiaokai
 # data: 2016/3/28
 import os
+from app.models import *
 
 """
 some operation on server
@@ -30,7 +31,7 @@ class Server(object):
 		init a docker container
 		:return: container_id, passwd='123456'
 		"""
-        os.system("docker run -it -d=true 043ece8dff9c  /bin/bash")  # create a machine
+        os.system("docker run -it -d=true '%s' /bin/bash" % image_id)  # create a machine
         container_id = (os.popen('docker ps -l -q')).readlines()[0].split('\n')[0]  # get the container's id
         container_ip = (os.popen('docker inspect --format="{{.NetworkSettings.IPAddress}}" %s' % container_id)).readlines()[0]
         os.system('docker exec %s service sshd start' % container_id)  # start the ssh service
@@ -81,15 +82,34 @@ class Server(object):
             print(ret_info)
             return ret_info
 
-    def install_software(self, user_name, shell_path, map, num_node):
+    def install_software(self, user_name, shell_path, src_name, map, num_node):
         if map == 'cluster':
             containers = []
             for i in range(num_node):
                 container_id, passwd, container_ip = self.init_machine('666cb2f7a158')
                 containers.append(container_id)
             print(containers)
-            self.exec_shell(shell_path, containers, state='cluster')
+            # self.exec_shell(shell_path, containers, state='cluster')
+            for i in range(num_node):  # write in the db
+                new_mc = VM_machine(mc_id=containers[i], user=user_name, apply_info=str(user_name)+'_'+str(src_name), state='ON')
+                db.session.add(new_mc)
+            
+            user = db.session.query(User).filter(User.user==user_name).first()
+            source_info = user.source_info
+            source_info = source_info + str(src_name) + '_' + str(num_node) + 'nodes;'
+            print(source_info)
+            db.session.query(User).filter(User.user==user_name).update({User.source_info: source_info})
+            db.session.commit()
+            
         else:
             container_id, passwd, container_ip = self.init_machine('ff416b30c157')
-            print("dddddddddddddddddddddddddddddddddd")
-            self.exec_shell(shell_path, container_id, state='single')
+            # self.exec_shell(shell_path, container_id, state='single')
+            string = user_name + '_' + src_name
+            print(string)
+            new_mc = VM_machine(mc_id=container_id, user=user_name, apply_info=string, state='ON')
+            db.session.add(new_mc)
+            user = db.session.query(User).filter(User.user==user_name).first()
+            source_info = user.source_info
+            source_info = source_info + str(src_name) + ';'
+            db.session.query(User).filter(User.user==user_name).update({User.source_info:source_info})
+            db.session.commit()

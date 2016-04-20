@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask.ext.sqlalchemy import SQLAlchemy
-import server
 # import server
 # host = server.Server()  # server
 
@@ -15,6 +14,7 @@ app.config['SESSION_TYPE'] = 'filesystem'
 login_manager = LoginManager()
 login_manager.setup_app(app)
 
+import models
+import server
 host = server.Server()
-
-import views, models  ## this import must put here
+import views

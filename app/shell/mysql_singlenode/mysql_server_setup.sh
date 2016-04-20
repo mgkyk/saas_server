@@ -5,30 +5,6 @@
 
 ## create group and user
 useradd -s /sbin/nologin -M mysql
-
-## create dir for the mysql
-mkdir -p /usr/local/mysql
-mkdir -p /data/mysqldb 
-
-## make mysql
-tar -zxvf mysql-5.5.20.tar.gz
-
-cd mysql-5.5.20
-
-cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
--DMYSQL_UNIX_ADDR=/data/mysql/mysql.sock \
--DDEFAULT_CHARSET=utf8 \
--DDEFAULT_COLLATION=utf8_general_ci \
--DWITH_EXTRA_CHARSETS:STRING=utf8,gbk \
--DWITH_INNOBASE_STORAGE_ENGINE=1 \
--DWITH_READLINE=1 \
--DENABLED_LOCAL_INFILE=1 \
--DMYSQL_DATADIR=/data/mysql/ \
--DMYSQL_USER=mysql \
--DMYSQL_TCP_PORT=3306
-
-make && make install
-
 ## priviledge
 chown -R root.mysql /usr/local/mysql
 chown -R mysql.mysql /usr/local/mysql/data

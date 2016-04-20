@@ -7,12 +7,12 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user = db.Column(db.String(40))
     password_hash = db.Column(db.String(40))  # password need to be hashed before installed
-    source_info = db.Column(db.String(40))
-
+    source_info = db.Column(db.String(200))
+    
     def __init__(self, id, user):
-        self.user = user
         self.id = id
-        source_info = ""
+        self.user = user
+        self.source_info = ""
 
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
@@ -34,13 +34,8 @@ class User(db.Model):
 class VM_machine(db.Model):
     mc_id = db.Column(db.String(40), primary_key=True)
     user = db.Column(db.String(40))
-    apply_info = db.Column(db.String(40))  # 部署应用的情况
-    state = db.Column(db.String(40))  # 是否开启
-
-    def __init__(self, mc_id, user, connect_info):
-        self.mc_id = mc_id
-        self.connect_info = connect_info
-        self.user = user
+    apply_info = db.Column(db.String(200))  # 部署应用的情况
+    state = db.Column(db.String(10))  # 是否开启
 
     def __repr__(self):
         return '<mc_id %r>' % self.mc_id

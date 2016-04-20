@@ -91,7 +91,7 @@ def get_src(user_name, src_name):  # user need to put a excel, how to do that
         else:
             num = 1
         # 异步安装软件
-        t = threading.Thread(target=host.install_software, args=(user_name, src.shell_path, src.map,  num))
+        t = threading.Thread(target=host.install_software, args=(user_name, src.shell_path, src.source_name, src.map,  num))
         t.setDaemon(True)
         t.start()
         return redirect(url_for('wait', user_name=g.user.user))  # 重定位到等到界面
