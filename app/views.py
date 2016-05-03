@@ -100,18 +100,42 @@ def get_src(user_name, src_name):  # user need to put a excel, how to do that
 @app.route('/<string:user_name>/user_info', methods=['GET'])
 @login_required
 def user_info(user_name):  # 包括user的所有的信息
-    print('ddd')
-    user = db.session.query(User).filter(User.user==user_name).first()
-    src_info = user.source_info
-    print(src_info)
-    if src_info == '':
-        src_info = []
+    if str(user_name) == 'root':
+        print("here")
+        return render_template('hello_manager.html')
     else:
-        tmp = src_info.split(';')
-        src_info = tmp
-    return render_template('hello_world.html', user=user.user, src_info=src_info)
+        user = db.session.query(User).filter(User.user==user_name).first()
+        src_info = user.source_info
+        print(src_info)
+        if src_info == '':
+            src_info = []
+        else:
+            tmp = src_info.split(';')
+            src_info = tmp
+        return render_template('hello_world.html', user=user.user, src_info=src_info)
 
-@app.route('/<string:user_name>//wait', methods=['GET'])
+@app.route('/<string:user_name>/wait', methods=['GET'])
 @login_required
 def wait(user_name):  # 提醒等待
     return render_template('wait.html', current_user=user_name)
+
+@app.route('/<string:user_name>/management', methods=['GET'])
+@login_required
+def management(user_name):
+    if str(user_name) == 'root':
+        print("lalal")
+        containers_info = db.session.query(VM_machine).all()
+        mcs_info = []
+        for item in containers_info:
+            tmp = []
+            tmp.append(str(item.mc_id))
+            tmp.append(str(item.apply_info))
+            mcs_info.append(tmp)
+        containers_state = []
+        for item in containers_info:
+            containers_state.append(host.get_machine_state(str(item.mc_id)))
+        print(containers_info)
+        return render_template('mc_state_info.html', state=containers_state, mcs_info=mcs_info)
+    else:
+        abort(400)
+

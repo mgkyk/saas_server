@@ -77,7 +77,7 @@ class Server(object):
             print("shell/report.sh is not found")
             return False
         else:
-            get_ret = (os.popen('bash shell/report.sh "%s"' % container_id)).readlines()
+            get_ret = (os.popen('bash app/shell/report.sh "%s"' % container_id)).readlines()
             ret_info = {'cpu info': get_ret[0], 'disk info': get_ret[1], 'memory info': get_ret[2], 'IDLE info': get_ret[3]}
             print(ret_info)
             return ret_info
@@ -99,7 +99,6 @@ class Server(object):
                 container_id, passwd, container_ip = self.init_machine('666cb2f7a158')
                 containers.append(container_id)
                 container_ips.append(container_ip)
-            print(containers)
             # self.exec_shell(shell_path, containers, state='cluster')
             # write in the db
             # write table vm_machine
@@ -116,7 +115,6 @@ class Server(object):
             container_id, passwd, container_ip = self.init_machine('ff416b30c157')
             # self.exec_shell(shell_path, container_id, state='single')
             string = user_name + '_' + src_name
-            print(string)
             new_mc = VM_machine(mc_id=container_id, user=user_name, apply_info=string, state='ON')
             db.session.add(new_mc)
             user = db.session.query(User).filter(User.user==user_name).first()

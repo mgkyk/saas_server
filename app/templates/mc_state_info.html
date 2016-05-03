@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>mc state</title>
+  </head>
+    <body>
+    <h1>Here is the mc on</h1>
+    <form>
+    {% for item in state %}
+        <div>
+        <ul>{{loop.index}}</ul>
+        <ul>{{mcs_info[loop.index0]}}</ul>
+        <ul>{{state[loop.index0]}}</ul>
+        </div>
+    {% endfor %}
+    </form>
+    </body>
+</html>
